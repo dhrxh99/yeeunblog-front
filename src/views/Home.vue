@@ -42,13 +42,6 @@
       <!-- 텅 비었을 때 -->
       <div class="empty" v-if="posts.length === 0">게시글이 없습니다.</div>
     </section>
-
-    <!-- 홈은 고정 1페이지 표시 -->
-    <div class="pagination pagination--home">
-      <span>&lt;</span>
-      <span>1 / 1</span>
-      <span>&gt;</span>
-    </div>
   </main>
 </template>
 
