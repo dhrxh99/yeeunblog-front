@@ -1,4 +1,5 @@
 <template>
+<!--
   <ul class="comment-list">
     <CommentItem
       v-for="c in comments"
@@ -14,7 +15,8 @@
 </template>
 
 <script setup>
-import CommentItem from './CommentItem.vue'
+import CommentItem from './CommentItem.vue.bak'
 defineProps({ comments: { type: Array, required: true } })
 defineEmits(['edit','save-edit','remove','reply','save-reply'])
 </script>
+-->
