@@ -1,0 +1,8 @@
+.sidebar { width: 260px; display: flex; flex-direction: column; gap: 16px; }
+.profile-card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; background: #fff; text-align: center; }
+.avatar { width: 72px; height: 72px; margin: 0 auto 8px; border-radius: 50%; background: linear-gradient(135deg, #dbeafe, #e9d5ff); }
+.nick { font-weight: 700; margin-bottom: 6px; }
+.mypage { text-decoration: none; color: #2563eb; }
+.category-list { list-style: none; padding: 0; margin: 0; }
+.category-list a { text-decoration: none; color: #111; }
+.category-list li + li { margin-top: 6px; }
