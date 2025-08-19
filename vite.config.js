@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     proxy: {
-      '/api' : {
+      '/saving-posting' : {
         target: 'http://localhost:8091',
         changeOrigin: true,
       }

@@ -7,6 +7,6 @@
 </template>
 
 <script setup>
-import Topbar from './components/Topbar.vue'
-import Sidebar from './components/Sidebar.vue'
+import Topbar from './components/site/TopBar.vue'
+import Sidebar from './components/site/SideBar.vue'
 </script>
