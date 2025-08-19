@@ -1,8 +1,8 @@
 <template>
-  <Topbar />
   <div class="page">
-    <Sidebar />
-    <router-view />
+    <TopBar />
+    <SideBar />
+    <main class="content">...</main>
   </div>
 </template>
 
