@@ -1,0 +1,73 @@
+/* 전체 레이아웃 */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: "Arial", sans-serif;
+  background: #f8fafd;
+  color: #111;
+}
+
+/* TopBar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 12px 24px;
+  border-bottom: 2px solid #000;
+}
+
+.home-btn {
+  position: absolute;
+  left: 24px;
+  padding: 6px 12px;
+  border: 1px solid #000;
+  background: #fff;
+  cursor: pointer;
+}
+
+.blog-title {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Content 레이아웃 */
+.content {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 180px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  font-size: 48px;
+}
+
+.nickname {
+  margin: 8px 0;
+  font-weight: bold;
+}
+
+.categories {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.categories li {
+  margin: 6px 0;
+}

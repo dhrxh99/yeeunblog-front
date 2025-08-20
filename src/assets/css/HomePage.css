@@ -1,0 +1,53 @@
+/* 게시글 영역 */
+.post-section {
+  flex: 1;
+}
+
+/* 게시글 헤더 (전체 게시글 + 정렬 버튼) */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.write-btn {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* 게시글 카드 그리드 */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.post-card {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.post-card .img {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.post-card .title {
+  padding: 8px;
+  font-weight: bold;
+}

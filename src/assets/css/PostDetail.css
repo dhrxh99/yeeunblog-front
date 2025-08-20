@@ -1,0 +1,52 @@
+.post-detail {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.post-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  background: #fff;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-meta {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.post-actions button {
+  margin-left: 8px;
+  background: none;
+  border: none;
+  color: #007acc;
+  cursor: pointer;
+}
+
+.comment-section {
+  margin-top: 16px;
+}
+
+.comment-form {
+  display: flex;
+  margin-top: 12px;
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.comment-form button {
+  margin-left: 8px;
+  padding: 8px 12px;
+}

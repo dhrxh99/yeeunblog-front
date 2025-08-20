@@ -1,0 +1,50 @@
+.content {
+  padding: 20px;
+}
+
+.content h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.sort {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.post-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  background: #fff;
+}
+
+.post-img {
+  height: 100px;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-title {
+  padding: 8px;
+  border-top: 1px solid #ccc;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.pagination span {
+  margin: 0 8px;
+  cursor: pointer;
+}
