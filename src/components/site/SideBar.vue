@@ -2,18 +2,14 @@
   <aside class="col-3">
     <div class="card">
       <div class="card-body text-center">
-        <img src="https://via.placeholder.com/80" class="rounded-circle mb-2" alt="avatar">
-        <h5 class="card-title">{{ nickname }}</h5>
-        <RouterLink :to="myPagePath" class="btn btn-sm btn-outline-primary mb-3">마이페이지</RouterLink>
-
         <ul class="list-group list-group-flush text-start">
           <li class="list-group-item d-flex align-items-center">
-            <img :src="itIcon" alt="IT" style="width:24px; height:24px; margin-right:8px;">
+            <img :src="itIcon" alt="IT" style="width:150px; height:150px; margin-right:20px;">
             <RouterLink to="/study/it">IT</RouterLink>
           </li>
           <li class="list-group-item d-flex align-items-center">
-            <img :src="jpIcon" alt="일본어" style="width:24px; height:24px; margin-right:8px;">
-            <RouterLink :to="jpCatTo">일본어</RouterLink>
+            <img :src="jpIcon" alt="일본어" style="width:150px; height:150px; margin-right:20px;">
+            <RouterLink :to="jpCatTo">日本語</RouterLink>
           </li>
         </ul>
       </div>
