@@ -1,49 +1,29 @@
 <template>
-  <div class="layout">
-    <!-- TopBar -->
-    <header class="topbar">
-      <button class="home-btn">홈버튼</button>
-      <h1 class="blog-title">Welcome to my Blog</h1>
-    </header>
-
-    <main class="content">
-      <!-- SideBar -->
-      <aside class="sidebar">
-        <div class="profile">
-          <div class="avatar">●</div>
-          <p class="nickname">닉네임</p>
-          <a href="#">마이페이지</a>
-        </div>
-        <ul class="categories">
-          <li>· IT</li>
-          <li>· 일본어</li>
-        </ul>
-      </aside>
-
-      <!-- Post Section -->
-      <section class="post-section">
-        <div class="post-header">
-          <h2>전체 게시글</h2>
-          <div class="post-tools">
-            <span>최신순 | 조회순</span>
-            <button class="write-btn">✏️</button>
+  <div class="container">
+    <div class="row">
+      <!-- Main Content -->
+      <main >
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h4">전체 게시글</h2>
+          <div>
+            <span class="me-3">최신순 | 조회순</span>
+            <button class="btn btn-sm btn-success">✏️ 글쓰기</button>
           </div>
         </div>
 
-        <div class="post-grid">
-          <div class="post-card" v-for="n in 6" :key="n">
-            <div class="img">.img</div>
-            <div class="title">제목{{ n }}</div>
+        <div class="row g-3">
+          <div class="col-md-4" v-for="n in 6" :key="n">
+            <div class="card h-100">
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:120px;">
+                .img
+              </div>
+              <div class="card-body text-center">
+                <h5 class="card-title">제목 {{ n }}</h5>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
+      </main>
+    </div>
   </div>
 </template>
-
-<script setup>
-// 특별한 로직 없음 (추후 API 연결 예정)
-</script>
-
-<style src="../assets/css/blog.css"></style>
-<style src="../assets/css/HomePage.css"></style>
