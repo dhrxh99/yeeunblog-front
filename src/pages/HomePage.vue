@@ -5,9 +5,11 @@
       <main >
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h2 class="h4">전체 게시글</h2>
-          <div>
-            <span class="me-3">최신순 | 조회순</span>
-            <button class="btn btn-sm btn-success">✏️ 글쓰기</button>
+          <div class="d-flex align-items-center">
+            <span class="me-4 small">최신순 | 조회순</span>
+              <RouterLink to="/posting" class="d-flex align-items-center">
+              <img :src='postingIcon' alt="" style="width:40px; height:40px; margin-right:8px; margin-left:1px;">
+              </RouterLink>
           </div>
         </div>
 
@@ -27,3 +29,7 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import postingIcon from '@/assets/images/postingButton.png'
+</script>
