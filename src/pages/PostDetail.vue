@@ -1,6 +1,6 @@
 <template>
   <div class="container my-4">
-    <div class="card shadow-sm">
+    <div v-if="post" class="card shadow-sm">
       <!-- 게시글 헤더 -->
       <div class="card-header bg-white">
         <h3 class="mb-1">{{ post.title }}</h3>
@@ -30,8 +30,9 @@
 
         <!-- 댓글 목록 -->
         <ul class="list-group mb-3">
-          <li class="list-group-item">
-            <strong>익명1</strong> <span class="text-muted small">댓글 내용입니다.</span>
+           <li v-for="c in comments" :key="c.id" class="list-group-item">
+            <strong>{{ c.author }}</strong>
+            <span class="text-muted small">{{ c.content }}</span>
             <div class="mt-2 d-flex gap-2">
               <button class="btn btn-sm btn-outline-primary">답글쓰기</button>
               <button class="btn btn-sm btn-outline-secondary">수정</button>
@@ -40,8 +41,9 @@
 
             <!-- 대댓글 -->
             <ul class="list-group list-group-flush mt-2 ms-4">
-              <li class="list-group-item">
-                <strong>나</strong> <span class="text-muted small">답글 내용입니다.</span>
+              <li v-for="r in c.replies" :key="r.id" class="list-group-item">
+                <strong>{{ r.author }}</strong>
+                <span class="text-muted small">{{ r.content }}</span>
               </li>
             </ul>
           </li>
@@ -54,24 +56,63 @@
         </form>
       </div>
     </div>
+
+     <!-- 로딩 표시 -->
+    <div v-else class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
+import { useRoute } from "vue-router"
+import axios from "axios"
 
-const post = ref({
-  id: 1,
-  title: "제목1",
-  content: "내용",
-  category: "IT",
-  createdAt: "2025.08.21 12:30",
-  viewCount: 0,
-  author: "닉네임"
-})
+const route = useRoute()
+const postId = route.params.id
 
+const post = ref(null)
+const comments = ref([])
 const newComment = ref("")
 const isAuthor = true
+
+async function fetchPosts() {
+  try {
+    const res = await axios.get(`/api/posts/${postId}`)
+    post.value = res.data // json 반환값 사용
+    console.log("호출")
+  } catch (e) {
+    console.error("게시글 로드 실패", e)
+  }
+}
+
+// 댓글 불러오기
+async function fetchComments() {
+  try {
+    const res = await axios.get(`/api/posts/${postId}/comments`)
+    comments.value = res.data
+  } catch (e) {
+    console.error("댓글 로드 실패", e)
+  }
+}
+
+// 댓글 작성
+async function submitComment() {
+  if (!newComment.value.trim()) return
+  try {
+    const res = await axios.post(`/api/posts/${postId}/comments`, {
+      content: newComment.value,
+      author: "익명" // 임시
+    })
+    comments.value.push(res.data) // 새 댓글 추가
+    newComment.value = ""
+  } catch (e) {
+    console.error("댓글 작성 실패", e)
+  }
+}
 
 function editPost() {
   console.log("수정 페이지 이동")
@@ -79,8 +120,15 @@ function editPost() {
 function confirmDelete(target) {
   console.log("삭제 대상:", target)
 }
-function submitComment() {
-  console.log("새 댓글:", newComment.value)
-  newComment.value = ""
+function openReplyForm(commentId) {
+  console.log("답글쓰기:", commentId)
 }
+function openEditForm(commentId) {
+  console.log("댓글 수정:", commentId)
+}
+
+onMounted(() => {
+  fetchPosts()
+  fetchComments()
+})
 </script>

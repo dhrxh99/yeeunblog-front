@@ -5,7 +5,11 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h2>{{ category }} 게시판</h2>
           <div class="d-flex align-items-center">
-            <span class="me-4 small">최신순 | 조회순</span>
+            <span class="me-4 small">
+              <a href="#" @click.prevent="changeSort('latest')">최신순</a>
+              | 
+              <a href="#" @click.prevent="changeSort(view)">조회순</a>
+              </span>
               <RouterLink to="/posting" class="d-flex align-items-center">
               <img :src='postingIcon' alt="" style="width:40px; height:40px; margin-right:8px; margin-left:1px;">
               </RouterLink>
@@ -16,7 +20,8 @@
           <div class="col-md-4" v-for="post in posts" :key="post.id">
             <div class="card h-100">
               <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:120px;">
-                .img
+                <span v-if="post.thumbnail">썸네일</span>
+                <span v-else>.img</span>
               </div>
               <div class="card-body text-center">
                 <h5 class="card-title">{{ post.title }}</h5>
@@ -50,18 +55,44 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import postingIcon from '@/assets/images/postingButton.png'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
+import func from '../../vue-temp/vue-editor-bridge'
 
-const props = defineProps({ category: String })
-const posts = ref([
-  { id: 1, title: '제목1' },
-  { id: 2, title: '제목2' },
-  { id: 3, title: '제목3' },
-  { id: 4, title: '제목4' },
-  { id: 5, title: '제목5' },
-  { id: 6, title: '제목6' }
-])
+const route = useRoute()
+const category = ref(route.params.category || "전체")
+
+const posts = reg([])
+const currentPage = reg(1)
+const totalPages = ref(1)
+const sort = ref("latest") 
+
+async function fetchPosts(page = 1) {
+  try {
+    const res = await axios.get("/api/posts", {
+      params: {
+        category: category.value !== "전체" ? category.value : null,
+        page: page -1,
+        size: 9,
+        sort: sort.value
+      }
+    })
+    posts.value = res.data.items
+    currentPage.value = res.data.page +1
+    totalPages.value = res.data.totalPages
+  } catch (e) {
+    console.error("게시글 불러오기 실패: ", e)
+  }
+}
+
+function changeSort(newSort) {
+  sort.value = newSort
+  fetchPosts(1)
+}
+
+onMounted(() => {
+  fetchPosts()
+})
 </script>
-
-<!-- <style src="@/assets/css/CategoryPage.css"></style> -->
