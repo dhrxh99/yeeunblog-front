@@ -1,30 +1,50 @@
 <template>
-  <main class="content">
-    <h2>{{ category }} 게시판</h2> <!-- IT → IT 게시판 / 일본어 → 일본어 게시판 -->
+<div class="container">
+    <div class="row">
+      <main >
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2>{{ category }} 게시판</h2>
+          <div>
+            <span class="me-3">최신순 | 조회순</span>
+            <button class="btn btn-sm btn-success">✏️ 글쓰기</button>
+          </div>
+        </div>
     
-    <div class="sort">
-      <button>최신순</button> | <button>조회순</button>
-    </div>
-    
-    <div class="post-grid">
-      <div v-for="post in posts" :key="post.id" class="post-card">
-        <div class="post-img">.img</div>
-        <div class="post-title">{{ post.title }}</div>
-      </div>
-    </div>
+        <div class="row g-3">
+          <div class="col-md-4" v-for="post in posts" :key="post.id">
+            <div class="card h-100">
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:120px;">
+                .img
+              </div>
+              <div class="card-body text-center">
+                <h5 class="card-title">{{ post.title }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <div class="pagination">
-      <button :disabled="currentPage === 1" @click="fetchPosts(currentPage - 1)">
-        &lt;
-      </button>
+        <div class="d-flex justify-content-center align-items-center mt-4">
+          <button 
+            class="btn btn-outline-secondary btn-sm me-2"
+            :disabled="currentPage === 1" 
+            @click="fetchPosts(currentPage - 1)"
+          >
+            &lt;
+          </button>
 
-      <span>{{ currentPage }} / {{ totalPages }}</span>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
 
-      <button :disabled="currentPage === totalPages" @click="fetchPosts(currentPage + 1)">
-        &gt;
-      </button>
+          <button 
+            class="btn btn-outline-secondary btn-sm ms-2"
+            :disabled="currentPage === totalPages" 
+            @click="fetchPosts(currentPage + 1)"
+          >
+            &gt;
+          </button>
+        </div>
+      </main>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup>
@@ -40,4 +60,4 @@ const posts = ref([
 ])
 </script>
 
-<style src="@/assets/css/CategoryPage.css"></style>
+<!-- <style src="@/assets/css/CategoryPage.css"></style> -->
