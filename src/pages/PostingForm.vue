@@ -54,3 +54,31 @@
     </div>
   </div>
 </template>
+
+
+<script setup>
+import axios from "axios"
+import { useRouter } from "vue-router"
+
+
+const router = useRouter()
+const category = ref("")
+const title = ref("")
+const content = ref("")
+
+const submitPost = async () => {
+  try {
+    const res = await axios.post("/api/posts", {
+      category: category.value,
+      title: title.value,
+      content: content.value
+    })
+    router.push(`/study/${category.value}`)
+  } catch (e) {
+    console.error("게시글 저장 실패", e)
+  }
+}
+
+
+</script>
+
