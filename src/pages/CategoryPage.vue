@@ -8,7 +8,7 @@
             <span class="me-4 small">
               <a href="#" @click.prevent="changeSort('latest')">최신순</a>
               | 
-              <a href="#" @click.prevent="changeSort(view)">조회순</a>
+              <a href="#" @click.prevent="changeSort('viewCount')">조회순</a>
               </span>
               <RouterLink to="/posting" class="d-flex align-items-center">
               <img :src='postingIcon' alt="" style="width:40px; height:40px; margin-right:8px; margin-left:1px;">
@@ -59,13 +59,12 @@ import { onMounted, ref } from 'vue'
 import postingIcon from '@/assets/images/postingButton.png'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import func from '../../vue-temp/vue-editor-bridge'
 
 const route = useRoute()
 const category = ref(route.params.category || "전체")
 
-const posts = reg([])
-const currentPage = reg(1)
+const posts = ref([])
+const currentPage = ref(1)
 const totalPages = ref(1)
 const sort = ref("latest") 
 
