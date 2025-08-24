@@ -9,7 +9,7 @@
           </li>
           <li class="list-group-item d-flex align-items-center">
             <img :src="jpIcon" alt="일본어" style="width:150px; height:150px; margin-right:20px;">
-            <RouterLink :to="jpCatTo">日本語</RouterLink>
+            <RouterLink to="/study/japanese">日本語</RouterLink>
           </li>
         </ul>
       </div>
@@ -28,7 +28,6 @@ const props = defineProps({
 })
 
 // 카테고리 링크
-const jpCatTo = computed(() => `/study/${encodeURIComponent('일본어')}`)
 
 // 이미지 import
 import itIcon from '@/assets/images/itCategory.png'

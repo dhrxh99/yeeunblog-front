@@ -55,7 +55,7 @@ async function fetchPosts() {
   })
   posts.value = res.data.posts
 } catch (e) {
-  console.error("메인 게시글 불러오rl 실패", e)
+  console.error("메인 게시글 불러오기 실패", e)
  }
 }
 
