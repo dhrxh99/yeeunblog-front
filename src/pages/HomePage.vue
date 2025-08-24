@@ -6,7 +6,11 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h2 class="h4">전체 게시글</h2>
           <div class="d-flex align-items-center">
-            <span class="me-4 small">최신순 | 조회순</span>
+            <span class="me-4 small">
+              <a href="#" @click.prevent="changeSort('latest')">최신순</a>
+              | 
+              <a href="#" @click.prevent="changeSort('viewCount')">조회순</a>
+              </span>
               <RouterLink to="/posting" class="d-flex align-items-center">
               <img :src="postingIcon" alt="" style="width:40px; height:40px; margin-right:8px; margin-left:1px;">
               </RouterLink>
@@ -42,16 +46,22 @@ import axios from 'axios'
 import { onMounted, ref } from 'vue'
 
 const posts = ref([])
+const sort = ref("latest")
 
 async function fetchPosts() {
   try{
-    const res = await axios.get("/api/posts", {
-    params: {sort: "latest", size: 6}
+    const res = await axios.get("/api/home", {
+    params: {sort: sort.value} 
   })
-  posts.value = res.data.items
+  posts.value = res.data.posts
 } catch (e) {
-  console.error("메인 게시글 불러오깃 실패", e)
+  console.error("메인 게시글 불러오rl 실패", e)
  }
+}
+
+function changeSort(newSort) {
+  sort.value = newSort
+  fetchPosts()
 }
 
 onMounted(fetchPosts)
