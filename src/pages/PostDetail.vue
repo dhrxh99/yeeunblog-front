@@ -82,7 +82,7 @@ const isAuthor = true
 
 async function fetchPosts() {
   try {
-    const res = await axios.get(`/api/posts/${postId}`)
+    const res = await axios.get(`/api/posts/${postId.value}`)
     post.value = res.data // json 반환값 사용
   } catch (e) {
     console.error("게시글 로드 실패", e)
@@ -92,7 +92,7 @@ async function fetchPosts() {
 // 댓글 불러오기
 async function fetchComments() {
   try {
-    const res = await axios.get(`/api/posts/${postId}/comments`)
+    const res = await axios.get(`/api/posts/${postId.value}/comments`)
     comments.value = res.data
   } catch (e) {
     console.error("댓글 로드 실패", e)
@@ -104,7 +104,7 @@ async function submitComment() {
   if (!newComment.value.trim()) return
 
   try {
-    const res = await axios.post(`/api/posts/${postId}/comments`, {
+    const res = await axios.post(`/api/posts/${postId.value}/comments`, {
       content: newComment.value,
       author: "익명" // 임시
     })
