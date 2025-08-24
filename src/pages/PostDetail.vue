@@ -7,6 +7,7 @@
         <div class="d-flex justify-content-between small text-muted">
           <div>
             <span>{{ post.category }}</span> |
+            <span>{{ post.author }}</span> |
             <span>{{ post.createdAt }}</span> |
             <span>조회수: {{ post.viewCount }}</span>
           </div>
@@ -67,12 +68,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch, computed } from "vue"
 import { useRoute } from "vue-router"
 import axios from "axios"
 
 const route = useRoute()
-const postId = route.params.id
+const postId = computed(() => route.params.id)
 
 const post = ref(null)
 const comments = ref([])
@@ -83,7 +84,6 @@ async function fetchPosts() {
   try {
     const res = await axios.get(`/api/posts/${postId}`)
     post.value = res.data // json 반환값 사용
-    console.log("호출")
   } catch (e) {
     console.error("게시글 로드 실패", e)
   }
@@ -102,6 +102,7 @@ async function fetchComments() {
 // 댓글 작성
 async function submitComment() {
   if (!newComment.value.trim()) return
+
   try {
     const res = await axios.post(`/api/posts/${postId}/comments`, {
       content: newComment.value,
@@ -131,4 +132,11 @@ onMounted(() => {
   fetchPosts()
   fetchComments()
 })
+
+watch(postId, () => {
+  fetchPost()
+  fetchComments()
+})
+
+
 </script>
