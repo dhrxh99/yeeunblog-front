@@ -3,7 +3,7 @@
     <div class="row">
       <main >
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <h2>{{ category }} 게시판</h2>
+          <h2>{{ displayCategory }} 게시판</h2>
           <div class="d-flex align-items-center">
             <span class="me-4 small">
               <a href="#" @click.prevent="changeSort('latest')">최신순</a>
@@ -63,6 +63,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import postingIcon from '@/assets/images/postingButton.png'
+import { categories } from '@/components/site/categories.js'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 
@@ -73,6 +74,8 @@ const posts = ref([])
 const currentPage = ref(1)
 const totalPages = ref(1)
 const sort = ref("latest") 
+
+const displayCategory = ref(categories[category.value] || "전체")
 
 async function fetchPosts(page = 1) {
   try {
@@ -105,6 +108,7 @@ watch(
   () => route.params.category,
   (newCategory) => {
     category.value = newCategory || "전체"
+    displayCategory.value = categories[category.value] || "전체"
     fetchPosts(1)
   }
 )
