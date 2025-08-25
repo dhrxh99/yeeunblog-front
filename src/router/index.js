@@ -11,6 +11,7 @@ export default createRouter({
     { path: '/', component: HomePage},
     { path: '/study/:category', component: CategoryPage, props:true },
     { path: '/posting', component: PostingForm }, 
+    { path: '/posting/:postId', component: PostingForm },
     { path: '/post/:id', component: PostDetail, props: true },
     { path: '/:pathMatch(.*)*', redirect: '/'}
   ]

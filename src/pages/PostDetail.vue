@@ -11,9 +11,9 @@
             <span>{{ post.createdAt }}</span> |
             <span>조회수: {{ post.viewCount }}</span>
           </div>
-          <div v-if="isAuthor">
+          <div>
             <button class="btn btn-sm btn-outline-secondary me-2" @click="editPost">수정</button>
-            <button class="btn btn-sm btn-outline-danger" @click="confirmDelete('post')">삭제</button>
+            <button class="btn btn-sm btn-outline-danger" @click="confirmDelete">삭제</button>
           </div>
         </div>
       </div>
@@ -25,40 +25,9 @@
 
       <hr />
 
-      <!-- 댓글 -->
-      <div class="card-body">
-        <h5 class="mb-3">댓글</h5>
+      <CommentSection :postId="Number(postId)" />
+      </div>       
 
-        <!-- 댓글 목록 -->
-        <ul class="list-group mb-3">
-           <li v-for="c in comments" :key="c.id" class="list-group-item">
-            <strong>{{ c.author }}</strong>
-            <span class="text-muted small">{{ c.content }}</span>
-            <div class="mt-2 d-flex gap-2">
-              <button class="btn btn-sm btn-outline-primary">답글쓰기</button>
-              <button class="btn btn-sm btn-outline-secondary">수정</button>
-              <button class="btn btn-sm btn-outline-danger">삭제</button>
-            </div>
-
-            <!-- 대댓글 -->
-            <ul class="list-group list-group-flush mt-2 ms-4">
-              <li v-for="r in c.replies" :key="r.id" class="list-group-item">
-                <strong>{{ r.author }}</strong>
-                <span class="text-muted small">{{ r.content }}</span>
-              </li>
-            </ul>
-          </li>
-        </ul>
-
-        <!-- 댓글 작성 -->
-        <form class="d-flex gap-2" @submit.prevent="submitComment">
-          <input type="text" class="form-control" v-model="newComment" placeholder="댓글을 입력하세요." />
-          <button type="submit" class="btn btn-success">작성하기</button>
-        </form>
-      </div>
-    </div>
-
-     <!-- 로딩 표시 -->
     <div v-else class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -69,74 +38,46 @@
 
 <script setup>
 import { onMounted, ref, watch, computed } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import axios from "axios"
+import CommentSection from "@/pages/CommentSection.vue"
 
 const route = useRoute()
-const postId = computed(() => route.params.id)
+const router = useRouter()
+const postId = computed(() => Number(route.params.id))
 
 const post = ref(null)
-const comments = ref([])
-const newComment = ref("")
-const isAuthor = true
 
 async function fetchPosts() {
   try {
     const res = await axios.get(`/api/posts/${postId.value}`)
-    post.value = res.data // json 반환값 사용
+    post.value = res.data 
   } catch (e) {
     console.error("게시글 로드 실패", e)
   }
 }
 
-// 댓글 불러오기
-async function fetchComments() {
-  try {
-    const res = await axios.get(`/api/posts/${postId.value}/comments`)
-    comments.value = res.data
-  } catch (e) {
-    console.error("댓글 로드 실패", e)
-  }
-}
-
-// 댓글 작성
-async function submitComment() {
-  if (!newComment.value.trim()) return
-
-  try {
-    const res = await axios.post(`/api/posts/${postId.value}/comments`, {
-      content: newComment.value,
-      author: "익명" // 임시
-    })
-    comments.value.push(res.data) // 새 댓글 추가
-    newComment.value = ""
-  } catch (e) {
-    console.error("댓글 작성 실패", e)
-  }
-}
-
 function editPost() {
-  console.log("수정 페이지 이동")
-}
-function confirmDelete(target) {
-  console.log("삭제 대상:", target)
-}
-function openReplyForm(commentId) {
-  console.log("답글쓰기:", commentId)
-}
-function openEditForm(commentId) {
-  console.log("댓글 수정:", commentId)
+  const password = prompt("비밀번호를 입력하세요.")
+  if (!password) return 
+    router.push({ path: `/posting/${postId.value}`, query: {password} })
 }
 
-onMounted(() => {
-  fetchPosts()
-  fetchComments()
-})
+function confirmDelete() {
+  const password = prompt("비밀번호를 입력하세요.")
+  if (!password) return
+  axios.delete(`/api/posts/${postId.value}`, { data: {password: password } } )
+  .then(() => {
+    alert("게시글이 삭제되었습니다.")
+    router.push(`/study/${post.value.category}`)
+  })
+  .catch(() => alert("비밀번호가 일치하지 않습니다."))
+}
+
+onMounted(fetchPosts)
 
 watch(postId, () => {
-  fetchPost()
-  fetchComments()
-})
-
+  fetchPosts()
+  })
 
 </script>

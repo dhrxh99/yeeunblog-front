@@ -26,8 +26,8 @@
         <input 
           type="text" 
           class="form-control"
-          placeholder="이름"
-          v-model="author"
+          placeholder="작성자명"
+          v-model="author" :disabled="isEditMode"
         />
       </div>
 
@@ -36,8 +36,12 @@
         <input 
           type="password" 
           class="form-control"
-          placeholder="비밀번호"
-          v-model="password"
+          placeholder="비밀번호 (4자리 숫자)"
+          v-model="password" 
+          pattern="\d{4}"
+          inputmode="numeric"
+          :disabled="isEditMode"
+          required
         />
       </div>
     </div>
@@ -52,48 +56,80 @@
       ></textarea>
     </div>
 
-    <!-- 작성 버튼 -->
+    <!-- 작성/수정 버튼 -->
     <div class="text-end">
-      <button class="btn btn-outline-dark" @click="submitPost">작성하기</button>
+      <button class="btn btn-outline-dark" @click="submitPost">
+        {{ isEditMode ? '수정하기' : '작성하기' }}
+      </button>
     </div>
   </div>
 </template>
 
 
 <script setup>
-import {ref} from "vue"
+import {computed, onMounted, ref} from "vue"
 import axios from "axios"
-import { useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 
 
 const router = useRouter()
+const route = useRoute()
+
+const postId = route.params.postId
+const editPassword = ref(route.query.password ?? "") // 수정 시 비밀번호 
 
 const category = ref("카테고리 선택")
 const title = ref("")
 const content = ref("")
 const author = ref("")
-const password = ref("")
+const password = ref("") // 신규 작성용 비밀번호
 
-const submitPost = async () => {
+const isEditMode = computed(() => !!postId)
 
-  if (category.value === "카테고리 선택" || !title.value.trim() || !content.value.trim()) {
-    alert("필수 항목을 입력하세요.") 
-    return 
+async function submitPost() {
+  if (!title.value.trim() || !content.value.trim() || category.value === "카테고리 선택") {
+    alert("필수 항목을 입력하세요.")
+    return
   }
 
   try {
-    const res = await axios.post("/api/posts", {
-      category: category.value,
-      title: title.value,
-      content: content.value,
-      author: author.value,
-      password: password.value
-    })
-    router.push(`/study/${category.value}`)
+    if (postId) {
+      // 수정 모드
+      await axios.put(`/api/posts/${postId}`, {
+        title: title.value,
+        content: content.value,
+        category: category.value,
+        password: editPassword.value.trim() // 상세에서 넘겨받은 pw
+      })
+      alert("게시글이 수정되었습니다.")
+      router.push(`/post/${postId}`) // 수정 완료 후 상세로
+    } else {
+      // 작성 모드
+      await axios.post("/api/posts", {
+        title: title.value,
+        content: content.value,
+        category: category.value,
+        author: author.value,
+        password: password.value
+      })
+      alert("게시글이 작성되었습니다.")
+      router.push(`/study/${category.value}`)
+    }
   } catch (e) {
-    console.error("게시글 저장 실패", e)
     alert("게시글 저장 실패")
+    console.error(e)
   }
 }
+
+onMounted(async () => {
+  if (isEditMode.value) {
+    const res = await axios.get(`/api/posts/${postId}`)
+    category.value = res.data.category
+    title.value = res.data.title
+    content.value = res.data.content
+    author.value = res.data.author
+  }
+})
+
 </script>
 
