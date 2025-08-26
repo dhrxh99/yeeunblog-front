@@ -48,10 +48,30 @@
 
     <!-- 댓글 작성 -->
     <form class="d-flex gap-2" @submit.prevent="submitComment">
-      <input type="text" class="form-control" v-model="newAuthor" placeholder="작성자명" />
-      <input type="password" class="form-control" placeholder="비밀번호 (4자리 숫자)" v-model="newPassword"
-            pattern="\d{4}" maxlength="4" inputmode="numeric" required/>
-      <input type="text" class="form-control" v-model="newComment" placeholder="댓글 내용" />
+      <input 
+      type="text" 
+      class="form-control"
+       v-model="newAuthor" 
+       placeholder="작성자명"
+       @keydown.enter.prevent 
+       />
+      <input 
+      type="password" 
+      class="form-control" 
+      placeholder="비밀번호 (4자리 숫자)" 
+      v-model="newPassword"
+      pattern="\d{4}" 
+      maxlength="4" 
+      inputmode="numeric" 
+      required
+      @keydown.enter.prevent
+      />
+      <textarea
+      class="form-control"
+      v-model="newComment" 
+      placeholder="댓글 내용" 
+      @keydown.enter.prevent="insertNewLine"
+      />
       <button type="submit" class="btn btn-success">작성하기</button>
     </form>
   </div>
@@ -75,6 +95,10 @@ const editTarget = ref(null) // 수정 중인 댓글 id
 const editContent = ref("")
 const editPassword = ref("")
 
+function insertNewLine(e) {
+  newComment.value += "\n"
+}
+
 async function fetchComments() {
   try {
     const res = await axios.get(`/api/posts/${props.postId}/comments`)
@@ -84,20 +108,12 @@ async function fetchComments() {
   }
 }
 
-// 댓글 작성
 async function submitComment() {
+
   if (!newAuthor.value.trim() || !newPassword.value.trim() || !newComment.value.trim()) {
     alert("작성자, 비밀번호, 내용을 모두 입력하세요.")
     return
   }
-
-    // 🔥 디버깅 로그 추가
-    console.log("댓글 작성 payload =>", {
-    postId: props.postId,
-    content: newComment.value,
-    author: newAuthor.value,
-    password: newPassword.value
-  })
 
   try {
     await axios.post(`/api/posts/${Number(props.postId)}/comments`, {
@@ -116,14 +132,12 @@ async function submitComment() {
   }
 }
 
-// 수정 시작
 function startEdit(comment) {
   editTarget.value = comment.id
   editContent.value = comment.content
   editPassword.value = ""
 }
 
-// 수정 저장
 async function saveEdit(commentId) {
   if (!editPassword.value.trim()) {
     alert("비밀번호를 입력하세요.")
@@ -141,14 +155,12 @@ async function saveEdit(commentId) {
   }
 }
 
-// 수정 취소
 function cancelEdit() {
   editTarget.value = null
   editContent.value = ""
   editPassword.value = ""
 }
 
-// 댓글/답글 삭제
 async function deleteComment(commentId) {
   const pw = prompt("비밀번호를 입력하세요:")
   if (!pw) return
@@ -162,7 +174,7 @@ async function deleteComment(commentId) {
   }
 }
 
-// 답글 작성
+// 답글
 async function reply(parentId) {
   const content = prompt("답글 내용을 입력하세요:")
   const author = prompt("작성자 이름을 입력하세요:") || "익명"
