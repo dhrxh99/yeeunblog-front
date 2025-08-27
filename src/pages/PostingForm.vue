@@ -48,12 +48,12 @@
 
     <!-- 본문 -->
     <div class="mb-3">
-      <textarea 
+      <ToastEditor
         class="form-control" 
         rows="10" 
         placeholder="내용을 입력하세요."
         v-model="content"
-      ></textarea>
+      />
     </div>
 
     <!-- 작성/수정 버튼 -->
@@ -70,6 +70,7 @@
 import {computed, onMounted, ref} from "vue"
 import axios from "axios"
 import { useRoute, useRouter } from "vue-router"
+import ToastEditor from '@/components/site/ToastEditor.vue'
 
 
 const router = useRouter()
