@@ -71,6 +71,12 @@ async function submitComment() {
     alert("작성자/비밀번호/내용을 모두 입력하세요.")
     return
   }
+
+  if (!/^\d{4}$/.test(newPassword.value)) {
+    alert("비밀번호는 반드시 4자리 숫자를 입력하세요.")
+    return
+  }
+
   await axios.post(`/api/posts/${props.postId}/comments`, {
     content: newComment.value,
     author: newAuthor.value,
@@ -125,6 +131,12 @@ function cancelReply() {
 }
 
 async function submitReply(parentId) {
+
+  if (!/^\d{4}$/.test(replyForm.value.password)) {
+    alert("비밀번호는 반드시 4자리 숫자를 입력하세요.")
+    return
+  }
+
   await axios.post(`/api/posts/${props.postId}/comments`, {
     content: replyForm.value.content,
     author: replyForm.value.author,

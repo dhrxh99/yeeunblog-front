@@ -93,6 +93,13 @@ async function submitPost() {
     return
   }
 
+   if (!postId) {
+    if (!/^\d{4}$/.test(password.value)) {
+      alert("비밀번호는 반드시 4자리 숫자를 입력하세요.")
+      return
+    }
+  }
+
   try {
     if (postId) {
       // 수정 모드
