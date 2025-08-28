@@ -25,7 +25,7 @@
     <!-- 댓글 작성 -->
     <form class="d-flex gap-2" @submit.prevent="submitComment">
       <input type="text" class="form-control" v-model="newAuthor" placeholder="작성자명" />
-      <input type="password" class="form-control" v-model="newPassword" placeholder="비밀번호 (4자리)" maxlength="4" required />
+      <input type="password" class="form-control" v-model="newPassword" placeholder="비밀번호 (4자리)" />
       <textarea class="form-control" v-model="newComment" placeholder="댓글 내용" />
       <button type="submit" class="btn btn-success">작성하기</button>
     </form>
@@ -90,6 +90,12 @@ async function submitComment() {
 async function startEdit(comment) {
   const pw = prompt("비밀번호를 입력하세요.")
   if (!pw) return
+
+  if (!/^\d{4}$/.test(pw)) {
+    alert("비밀번호는 반드시 4자리 숫자를 입력하세요.")
+    return
+  }
+
   const res = await axios.post(`/api/posts/${props.postId}/comments/${comment.id}/check`, { password: pw })
   if (res.data.valid) {
     editTarget.value = comment.id
@@ -101,6 +107,12 @@ async function startEdit(comment) {
 }
 
 async function saveEdit(commentId) {
+
+  if (!/^\d{4}$/.test(editPassword.value)) {
+    alert("비밀번호는 반드시 4자리 숫자를 입력하세요.")
+    return
+  }
+
   await axios.put(`/api/posts/${props.postId}/comments/${commentId}`, {
     content: editContent.value,
     password: editPassword.value
@@ -118,6 +130,12 @@ function cancelEdit() {
 async function deleteComment(commentId) {
   const pw = prompt("비밀번호를 입력하세요:")
   if (!pw) return
+
+  if (!/^\d{4}$/.test(pw)) {
+    alert("비밀번호는 반드시 4자리 숫자를 입력하세요.")
+    return
+  }
+
   await axios.delete(`/api/posts/${props.postId}/comments/${commentId}`, { data: { password: pw } })
   fetchComments()
 }
