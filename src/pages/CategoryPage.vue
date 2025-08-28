@@ -21,8 +21,18 @@
             <RouterLink :to="`/post/${post.id}`" class="text-decoration-none text-dark">
             <div class="card h-100 show=sm">
               <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:120px;">
-                <img v-if="post.thumbnail" :src="post.thumbnail" alt="썸네일" style="max-height:100%; max-width:100%; object-fit:cover;"/>
-                <span v-else>.img</span>
+                <img 
+                  v-if="post.thumbnail" 
+                  :src="post.thumbnail" 
+                  alt="썸네일"
+                  style="width:100%; height:100%; object-fit:cover;" 
+                />
+                <img 
+                  v-else 
+                  src="@/assets/images/default-thumbnail.png" 
+                  alt="기본 이미지"
+                  style="width:100%; height:100%; object-fit:cover;" 
+                />
               </div>
 
               <div class="card-body text-center">
@@ -83,7 +93,7 @@ async function fetchPosts(page = 1) {
       params: {
         category: category.value !== "전체" ? category.value : null,
         page: page -1,
-        size: 9,
+        size: 6,
         sort: sort.value
       }
     })

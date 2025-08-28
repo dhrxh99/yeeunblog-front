@@ -22,8 +22,18 @@
             <RouterLink :to="`/post/${post.id}`" class="text-decoration-none text-dark">
             <div class="card h-100">
               <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:120px;">
-                  <img v-if="post.thumbnail" :src="post.thumbnail" style="max-height:100%; object-fit:cover;" />
-                  <span v-else>.img</span>
+                  <img 
+                    v-if="post.thumbnail" 
+                    :src="post.thumbnail" 
+                    alt="썸네일"
+                    style="width:100%; height:100%; object-fit:cover;" 
+                  />
+                  <img 
+                    v-else 
+                    src="@/assets/images/default-thumbnail.png" 
+                    alt="기본 이미지"
+                    style="width:100%; height:100%; object-fit:cover;" 
+                  />
               </div>
               <div class="card-body text-center">
                   <h5 class="card-title">{{ post.title }}</h5>
